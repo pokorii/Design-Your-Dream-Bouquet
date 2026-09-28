@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blooms & Petals - Custom Bouquet Designer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        blush: {
+                            50: '#fdf8f6',
+                            100: '#fbece9',
+                            200: '#f6d9d3',
+                            300: '#efbfb4',
+                            400: '#e49b8a',
+                            500: '#d57662',
+                            600: '#be5b45',
+                            700: '#9e4735',
+                        },
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e6ede6',
+                            200: '#cfddcf',
+                            300: '#abc2ab',
+                            400: '#80a080',
+                            500: '#608260',
+                            600: '#4c684c',
+                            700: '#3f543f',
+                        },
+                        cream: '#fffdf9',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fdf8f6;
+            color: #2c2c2c;
+        }
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fbece9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d57662;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #be5b45;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(228, 155, 138, 0.2);
+        }
+        .pulse-subtle {
+            animation: pulseSubtle 3s infinite ease-in-out;
+        }
+        @keyframes pulseSubtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col bg-gradient-to-br from-blush-50 via-cream to-sage-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-blush-200/60 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-blush-500 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-seedling text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-serif font-bold tracking-wide text-sage-700">Fleuris</span>
+                    <span class="block text-xs uppercase tracking-widest text-blush-600 font-semibold">Custom Atelier</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#customizer" class="hover:text-blush-600 transition">Design Studio</a>
+                <a href="#gallery" class="hover:text-blush-600 transition">Signature Collection</a>
+                <a href="#about" class="hover:text-blush-600 transition">Our Craft</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button onclick="scrollToCustomizer()" class="bg-sage-600 hover:bg-sage-700 text-white px-5 py-2.5 rounded-full font-medium text-sm shadow-md hover:shadow-lg transition flex items-center space-x-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Start Designing</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-12 lg:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 bg-blush-100 text-blush-700 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-heart text-blush-500"></i>
+                    <span>Handcrafted with love</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-slate-900 leading-tight">
+                    Design Your Dream <span class="text-blush-600 italic">Bouquet</span>
+                </h1>
+                <p class="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 font-light">
+                    Pick your favorite blooms, customize elegant wrappers, tie with silk ribbons, and attach a heartfelt note. Watch your creation bloom in real-time.
+                </p>
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
+                    <a href="#customizer" class="bg-blush-600 hover:bg-blush-700 text-white font-medium px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+                        <span>Open Studio</span>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                    <button onclick="loadPreset('romantic')" class="bg-white hover:bg-blush-50 text-slate-700 border border-blush-200 font-medium px-6 py-3.5 rounded-full shadow-sm transition">
+                        Try Romantic Rose Preset
+                    </button>
+                </div>
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-blush-200/60 max-w-md mx-auto lg:mx-0">
+                    <div>
+                        <p class="text-2xl font-serif font-bold text-sage-700">100%</p>
+                        <p class="text-xs text-slate-500">Fresh Farm Flowers</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-serif font-bold text-sage-700">Real-Time</p>
+                        <p class="text-xs text-slate-500">Visual Preview</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-serif font-bold text-sage-700">Same-Day</p>
+                        <p class="text-xs text-slate-500">Express Delivery</p>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative w-full max-w-md aspect-square rounded-3xl bg-gradient-to-tr from-blush-200/50 to-sage-200/50 p-6 shadow-xl flex items-center justify-center pulse-subtle">
+                    <div class="absolute inset-4 rounded-2xl bg-white/80 backdrop-blur-md border border-white flex flex-col items-center justify-center p-6 text-center shadow-inner">
+                        <div class="w-24 h-24 rounded-full bg-blush-100 flex items-center justify-center mb-4 text-blush-600 text-4xl shadow-md">
+                            💐
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-slate-800">Interactive Atelier</h3>
+                        <p class="text-sm text-slate-500 mt-1">Select elements below to customize stem count, varieties, wrapping, and cards instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customizer Atelier Section -->
+    <section id="customizer" class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex-grow">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900">The Design Studio</h2>
+            <p class="text-slate-600 mt-2">Customize every detail of your arrangement step by step</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Column: Controls & Tabs -->
+            <div class="lg:col-span-7 space-y-6">
+                <!-- Navigation Tabs -->
+                <div class="flex overflow-x-auto space-x-2 bg-white/80 backdrop-blur-md p-1.5 rounded-2xl border border-blush-200/80 shadow-sm">
+                    <button onclick="switchTab('flowers')" id="tab-flowers" class="flex-1 min-w-[100px] py-3 px-4 rounded-xl font-semibold text-sm transition flex items-center justify-center space-x-2 bg-blush-600 text-white shadow-sm">
+                        <i class="fa-solid fa-spa"></i>
+                        <span>Flowers</span>
+                    </button>
+                    <button onclick="switchTab('wrapping')" id="tab-wrapping" class="flex-1 min-w-[100px] py-3 px-4 rounded-xl font-medium text-sm transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-blush-50">
+                        <i class="fa-solid fa-gift"></i>
+                        <span>Wrapping</span>
+                    </button>
+                    <button onclick="switchTab('ribbon')" id="tab-ribbon" class="flex-1 min-w-[100px] py-3 px-4 rounded-xl font-medium text-sm transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-blush-50">
+                        <i class="fa-solid fa-ribbon"></i>
+                        <span>Ribbon</span>
+                    </button>
+                    <button onclick="switchTab('card')" id="tab-card" class="flex-1 min-w-[100px] py-3 px-4 rounded-xl font-medium text-sm transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-blush-50">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Card & Note</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content Containers -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-blush-200/80">
+                    
+                    <!-- Tab 1: Flowers & Stems -->
+                    <div id="panel-flowers" class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-serif text-xl font-bold text-slate-800">Choose Your Blooms</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Select flower types and adjust stem quantities</p>
+                            </div>
+                            <span class="text-xs bg-sage-100 text-sage-800 font-semibold px-3 py-1 rounded-full"><span id="total-stems-count">7</span> Stems Selected</span>
+                        </div>
+
+                        <div class="space-y-4" id="flower-selection-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <div class="p-4 bg-blush-50 rounded-2xl border border-blush-100 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-blush-200 text-blush-700 flex items-center justify-center">
+                                    <i class="fa-solid fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm text-slate-800">Greenery & Foliage Filler</h4>
+                                    <p class="text-xs text-slate-500">Eucalyptus & Salal leaves included standard</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-bold text-sage-700">Free</span>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Wrapping Paper -->
+                    <div id="panel-wrapping" class="space-y-6 hidden">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-slate-800">Wrapping Paper Style</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Select luxury Korean wrapping paper or eco-friendly craft</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="wrapping-options-grid">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Ribbon Style -->
+                    <div id="panel-ribbon" class="space-y-6 hidden">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-slate-800">Ribbon & Bow Finishing</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Choose a satin or chiffon ribbon bow</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="ribbon-options-grid">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Greeting Card -->
+                    <div id="panel-card" class="space-y-6 hidden">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-slate-800">Greeting Card & Message</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Add a personalized handwritten card for your recipient</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4" id="card-style-grid">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <div class="space-y-2 pt-2">
+                            <label class="block text-sm font-semibold text-slate-700">Personalized Message</label>
+                            <textarea id="card-message-input" rows="4" placeholder="Write your heartfelt message here..." class="w-full rounded-2xl border border-slate-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 focus:border-transparent bg-slate-50/50 resize-none" oninput="updateCardMessage(this.value)"></textarea>
+                            <div class="flex justify-between text-xs text-slate-400">
+                                <span id="char-count">0 / 250 characters</span>
+                                <span>Free handwritten card included</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Live Visual Preview & Price Summary -->
+            <div class="lg:col-span-5 space-y-6 sticky top-28">
+                
+                <!-- Live Bouquet Preview Canvas Card -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl border border-blush-200/80 relative overflow-hidden flex flex-col items-center">
+                    <div class="absolute top-4 left-4 z-10 flex items-center space-x-2 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-blush-100">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span class="text-xs font-semibold text-slate-700">Live Visual Preview</span>
+                    </div>
+
+                    <div class="absolute top-4 right-4 z-10">
+                        <button onclick="resetBouquet()" class="text-slate-400 hover:text-blush-600 p-2 rounded-full hover:bg-blush-50 transition" title="Reset Customization">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- SVG Bouquet Canvas Graphic -->
+                    <div class="w-full max-w-[320px] aspect-square flex items-center justify-center mt-6 relative">
+                        <!-- Wrapping Back Drop -->
+                        <svg id="svg-wrapping-back" viewBox="0 0 300 300" class="absolute inset-0 w-full h-full drop-shadow-md transition-all duration-500">
+                            <!-- Dynamic wrapping back path -->
+                        </svg>
+
+                        <!-- Stems / Leaves Layer -->
+                        <svg id="svg-stems" viewBox="0 0 300 300" class="absolute inset-0 w-full h-full">
+                            <!-- Dynamic stems -->
+                        </svg>
+
+                        <!-- Flowers Head Layer -->
+                        <svg id="svg-flowers" viewBox="0 0 300 300" class="absolute inset-0 w-full h-full transition-all duration-500">
+                            <!-- Dynamic flower heads -->
+                        </svg>
+
+                        <!-- Wrapping Front Layer -->
+                        <svg id="svg-wrapping-front" viewBox="0 0 300 300" class="absolute inset-0 w-full h-full drop-shadow-lg transition-all duration-500">
+                            <!-- Dynamic wrapping front and ribbon -->
+                        </svg>
+                    </div>
+
+                    <!-- Selected Summary Badge -->
+                    <div class="w-full bg-blush-50/70 rounded-2xl p-3 mt-4 border border-blush-100 flex items-center justify-between text-xs text-slate-600">
+                        <span id="preview-summary-text" class="font-medium truncate max-w-[220px]">Custom Mixed Arrangement</span>
+                        <span id="preview-size-badge" class="font-bold text-blush-700 bg-white px-2.5 py-1 rounded-lg shadow-sm">Medium (7 stems)</span>
+                    </div>
+                </div>
+
+                <!-- Price Calculator & Checkout Card -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl border border-blush-200/80 space-y-5">
+                    <h3 class="font-serif text-xl font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center justify-between">
+                        <span>Order Summary</span>
+                        <span class="text-xs font-sans font-normal text-slate-500" id="summary-item-count">7 items</span>
+                    </h3>
+
+                    <div class="space-y-2.5 text-sm" id="price-breakdown-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-sm font-semibold text-slate-700">Total Price</span>
+                            <span class="block text-xs text-slate-400">Tax included, free delivery</span>
+                        </div>
+                        <div class="text-2xl font-serif font-bold text-blush-700" id="total-price-display">$68.00</div>
+                    </div>
+
+                    <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-blush-600 to-blush-500 hover:from-blush-700 hover:to-blush-600 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span>Proceed to Checkout</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Signature Collection Section -->
+    <section id="gallery" class="py-16 bg-white/60 border-t border-blush-200/50 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-semibold uppercase tracking-wider text-blush-600 bg-blush-100 px-3 py-1 rounded-full">Curated Masterpieces</span>
+                <h2 class="text-3xl font-serif font-bold text-slate-900 mt-3">Our Signature Bouquets</h2>
+                <p class="text-slate-600 text-sm mt-2">Not sure where to start? Load one of our master florist's favorite preset arrangements into the studio.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Preset 1 -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-blush-100 hover:shadow-xl transition flex flex-col">
+                    <div class="h-56 bg-gradient-to-br from-rose-100 to-blush-200 relative flex items-center justify-center overflow-hidden">
+                        <div class="text-6xl">🌹</div>
+                        <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-blush-700 shadow-sm">$75.00</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-slate-800">The Royal Crimson Romance</h3>
+                            <p class="text-xs text-slate-500 mt-1">Deep red Ecuadorian roses paired with white baby's breath and burgundy silk wrapping.</p>
+                        </div>
+                        <button onclick="loadPreset('romantic')" class="w-full bg-blush-50 hover:bg-blush-100 text-blush-700 font-semibold py-2.5 rounded-xl text-sm transition border border-blush-200">
+                            Customize This Bouquet
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preset 2 -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-blush-100 hover:shadow-xl transition flex flex-col">
+                    <div class="h-56 bg-gradient-to-br from-amber-100 to-amber-200 relative flex items-center justify-center overflow-hidden">
+                        <div class="text-6xl">🌻</div>
+                        <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-blush-700 shadow-sm">$62.00</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-slate-800">Golden Sunshine Meadow</h3>
+                            <p class="text-xs text-slate-500 mt-1">Vibrant sunflowers and yellow tulips wrapped in natural kraft paper with a golden jute ribbon.</p>
+                        </div>
+                        <button onclick="loadPreset('sunshine')" class="w-full bg-blush-50 hover:bg-blush-100 text-blush-700 font-semibold py-2.5 rounded-xl text-sm transition border border-blush-200">
+                            Customize This Bouquet
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preset 3 -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-blush-100 hover:shadow-xl transition flex flex-col">
+                    <div class="h-56 bg-gradient-to-br from-purple-100 to-indigo-200 relative flex items-center justify-center overflow-hidden">
+                        <div class="text-6xl">🪻</div>
+                        <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-blush-700 shadow-sm">$84.00</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-slate-800">Lavender Serenity Dream</h3>
+                            <p class="text-xs text-slate-500 mt-1">Enchanting purple orchids, lavender tulips, and white lilies wrapped in pastel lavender paper.</p>
+                        </div>
+                        <button onclick="loadPreset('lavender')" class="w-full bg-blush-50 hover:bg-blush-100 text-blush-700 font-semibold py-2.5 rounded-xl text-sm transition border border-blush-200">
+                            Customize This Bouquet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-blush-200 relative transform transition-all my-8">
+            <button onclick="closeCheckoutModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-blush-100 hover:text-blush-700 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-full bg-blush-100 text-blush-600 flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fa-solid fa-gift"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-slate-900">Complete Your Order</h3>
+                <p class="text-xs text-slate-500 mt-1">Enter your delivery details and recipient information</p>
+            </div>
+
+            <form id="order-form" onsubmit="submitOrder(event)" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                        <input type="text" required placeholder="Jane Doe" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 bg-slate-50/50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+                        <input type="tel" required placeholder="(555) 123-4567" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 bg-slate-50/50">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Recipient Name</label>
+                    <input type="text" required placeholder="Recipient's Full Name" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 bg-slate-50/50">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Delivery Address</label>
+                    <textarea required rows="2" placeholder="Street address, apartment, city, postal code" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 bg-slate-50/50 resize-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Delivery Date</label>
+                        <input type="date" required class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 bg-slate-50/50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Time Slot</label>
+                        <select class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blush-400 bg-slate-50/50">
+                            <option>Morning (9AM - 1PM)</option>
+                            <option>Afternoon (1PM - 5PM)</option>
+                            <option>Evening (5PM - 8PM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-blush-50/80 rounded-2xl border border-blush-100 flex items-center justify-between text-sm">
+                    <div>
+                        <span class="font-semibold text-slate-700">Total Due:</span>
+                        <span class="text-xs block text-slate-500">Secure checkout via Stripe / Apple Pay</span>
+                    </div>
+                    <span id="modal-total-price" class="font-serif font-bold text-xl text-blush-700">$68.00</span>
+                </div>
+
+                <button type="submit" class="w-full bg-blush-600 hover:bg-blush-700 text-white font-semibold py-3.5 rounded-2xl shadow-lg transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-lock text-xs"></i>
+                    <span>Confirm & Pay Securely</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Order Confirmation Modal -->
+    <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-blush-200 text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-3xl shadow-md">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-slate-900">Order Placed Successfully!</h3>
+            <p class="text-sm text-slate-600">Thank you for choosing Fleuris Atelier. Our master florists are handcrafting your custom bouquet with fresh blooms right now.</p>
+            <div class="bg-slate-50 p-4 rounded-2xl text-xs text-slate-500 font-mono">
+                Order Reference: #FL-2026-8894
+            </div>
+            <button onclick="closeSuccessModal()" class="w-full bg-sage-600 hover:bg-sage-700 text-white font-semibold py-3 rounded-2xl transition">
+                Back to Studio
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="about" class="bg-slate-900 text-slate-400 py-12 px-4 sm:px-6 lg:px-8 mt-auto border-t border-slate-800">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-blush-500 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-seedling text-sm"></i>
+                    </div>
+                    <span class="text-xl font-serif font-bold text-white">Fleuris</span>
+                </div>
+                <p class="text-xs leading-relaxed text-slate-400">
+                    Artisanal floral design studio bringing you the freshest flowers harvested daily from sustainable eco-farms.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold text-sm mb-3">Atelier Studio</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#customizer" class="hover:text-white transition">Custom Designer</a></li>
+                    <li><a href="#gallery" class="hover:text-white transition">Signature Bouquets</a></li>
+                    <li><a href="#" class="hover:text-white transition">Flower Care Guide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold text-sm mb-3">Customer Care</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#" class="hover:text-white transition">Delivery Information</a></li>
+                    <li><a href="#" class="hover:text-white transition">Subscription Club</a></li>
+                    <li><a href="#" class="hover:text-white transition">Contact Florist</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold text-sm mb-3">Stay Inspired</h4>
+                <p class="text-xs text-slate-400 mb-3">Subscribe for floral tips and exclusive seasonal discounts.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Your email" class="bg-slate-800 text-xs px-3 py-2 rounded-l-xl border border-slate-700 focus:outline-none text-white w-full">
+                    <button class="bg-blush-600 hover:bg-blush-700 text-white px-4 rounded-r-xl text-xs transition">Join</button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+            <p>&copy; 2026 Fleuris Floral Atelier. All rights reserved.</p>
+            <div class="flex space-x-6 mt-4 sm:mt-0">
+                <a href="#" class="hover:text-slate-400 transition">Privacy Policy</a>
+                <a href="#" class="hover:text-slate-400 transition">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Data Definitions for Options
+        const flowersData = [
+            { id: 'rose', name: 'Ecuadorian Rose', icon: '🌹', price: 4.5, count: 5, color: '#e04a5a', desc: 'Classic velvety luxury rose' },
+            { id: 'tulip', name: 'Spring Tulip', icon: '🌷', price: 3.5, count: 0, color: '#f28cb1', desc: 'Graceful & vibrant seasonal tulip' },
+            { id: 'sunflower', name: 'Golden Sunflower', icon: '🌻', price: 5.0, count: 0, color: '#f59e0b', desc: 'Bright and cheerful bloom' },
+            { id: 'orchid', name: 'Phalaenopsis Orchid', icon: '🪻', price: 6.0, count: 0, color: '#8b5cf6', desc: 'Exotic and elegant purple orchid' },
+            { id: 'peony', name: 'Blush Peony', icon: '🌸', price: 5.5, count: 2, color: '#fbcfe8', desc: 'Lush ruffled romantic petals' },
+            { id: 'babysbreath', name: "Baby's Breath", icon: '⚪', price: 2.5, count: 2, color: '#ffffff', desc: 'Delicate airy white filler clusters' }
+        ];
+
+        const wrappingData = [
+            { id: 'korean_blush', name: 'Korean Blush Pink', color: '#fce7f3', border: '#f472b6', price: 0 },
+            { id: 'kraft_eco', name: 'Eco Kraft Paper', color: '#d4b28c', border: '#b48a60', price: 0 },
+            { id: 'matte_black', name: 'Noir Matte', color: '#334155', border: '#1e293b', price: 4 },
+            { id: 'lavender_mist', name: 'Lavender Mist', color: '#ede9fe', border: '#c4b5fd', price: 3 },
+            { id: 'sage_silk', name: 'Sage Green Silk', color: '#e6ede6', border: '#abc2ab', price: 5 },
+            { id: 'gold_foil', name: 'White & Gold Foil', color: '#fffbeb', border: '#fde047', price: 6 }
+        ];
+
+        const ribbonData = [
+            { id: 'satin_blush', name: 'Blush Satin Bow', color: '#f472b6', price: 0 },
+            { id: 'white_chiffon', name: 'White Chiffon', color: '#f8fafc', price: 2 },
+            { id: 'burgundy_velvet', name: 'Burgundy Velvet', color: '#881337', price: 4 },
+            { id: 'gold_jute', name: 'Golden Jute Twine', color: '#d97706', price: 1 },
+            { id: 'sage_satin', name: 'Sage Green Satin', color: '#608260', price: 2 }
+        ];
+
+        const cardData = [
+            { id: 'none', name: 'No Card', icon: '🚫', price: 0 },
+            { id: 'birthday', name: 'Happy Birthday', icon: '🎂', price: 3 },
+            { id: 'romance', name: 'Love & Romance', icon: '💖', price: 3 },
+            { id: 'congrats', name: 'Congratulations', icon: '🎉', price: 3 },
+            { id: 'sympathy', name: 'Warm Condolences', icon: '🕊️', price: 3 },
+            { id: 'blank', name: 'Blank Note', icon: '💌', price: 2 }
+        ];
+
+        // State variables
+        let state = {
+            flowers: {
+                rose: 5,
+                tulip: 0,
+                sunflower: 0,
+                orchid: 0,
+                peony: 2,
+                babysbreath: 2
+            },
+            wrapping: 'korean_blush',
+            ribbon: 'satin_blush',
+            card: 'none',
+            cardMessage: ''
+        };
+
+        // Initialize UI on load
+        window.onload = function() {
+            renderFlowerList();
+            renderWrappingOptions();
+            renderRibbonOptions();
+            renderCardOptions();
+            updateAll();
+        };
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            ['flowers', 'wrapping', 'ribbon', 'card'].forEach(t => {
+                document.getElementById(`panel-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).className = "flex-1 min-w-[100px] py-3 px-4 rounded-xl font-medium text-sm transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-blush-50";
+            });
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).className = "flex-1 min-w-[100px] py-3 px-4 rounded-xl font-semibold text-sm transition flex items-center justify-center space-x-2 bg-blush-600 text-white shadow-sm";
+        }
+
+        function scrollToCustomizer() {
+            document.getElementById('customizer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Render Flower Options
+        function renderFlowerList() {
+            const container = document.getElementById('flower-selection-list');
+            container.innerHTML = flowersData.map(f => `
+                <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blush-200 transition">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-3xl">${f.icon}</span>
+                        <div>
+                            <h4 class="font-semibold text-sm text-slate-800">${f.name}</h4>
+                            <p class="text-xs text-slate-500">${f.desc} • <span class="text-blush-700 font-medium">$${f.price.toFixed(2)}/stem</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="updateStemCount('${f.id}', -1)" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-blush-100 hover:text-blush-700 transition shadow-sm font-bold">-</button>
+                        <span id="count-${f.id}" class="w-6 text-center font-bold text-sm text-slate-800">${state.flowers[f.id]}</span>
+                        <button onclick="updateStemCount('${f.id}', 1)" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-blush-100 hover:text-blush-700 transition shadow-sm font-bold">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStemCount(id, delta) {
+            const current = state.flowers[id] || 0;
+            const updated = Math.max(0, current + delta);
+            state.flowers[id] = updated;
+            document.getElementById(`count-${id}`).innerText = updated;
+            updateAll();
+        }
+
+        // Render Wrapping Options
+        function renderWrappingOptions() {
+            const container = document.getElementById('wrapping-options-grid');
+            container.innerHTML = wrappingData.map(w => `
+                <div onclick="selectWrapping('${w.id}')" id="wrap-card-${w.id}" class="cursor-pointer p-4 rounded-2xl border-2 transition flex flex-col items-center text-center space-y-2 ${state.wrapping === w.id ? 'border-blush-600 bg-blush-50/50 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-blush-200'}">
+                    <div class="w-12 h-12 rounded-full shadow-inner border" style="background-color: ${w.color}; border-color: ${w.border};"></div>
+                    <div>
+                        <h4 class="font-semibold text-xs text-slate-800">${w.name}</h4>
+                        <p class="text-[10px] text-slate-500">${w.price === 0 ? 'Included' : `+$${w.price}.00`}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectWrapping(id) {
+            state.wrapping = id;
+            renderWrappingOptions();
+            updateAll();
+        }
+
+        // Render Ribbon Options
+        function renderRibbonOptions() {
+            const container = document.getElementById('ribbon-options-grid');
+            container.innerHTML = ribbonData.map(r => `
+                <div onclick="selectRibbon('${r.id}')" id="ribbon-card-${r.id}" class="cursor-pointer p-4 rounded-2xl border-2 transition flex flex-col items-center text-center space-y-2 ${state.ribbon === r.id ? 'border-blush-600 bg-blush-50/50 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-blush-200'}">
+                    <div class="w-10 h-10 rounded-full shadow-md flex items-center justify-center text-white text-xs" style="background-color: ${r.color}">🎀</div>
+                    <div>
+                        <h4 class="font-semibold text-xs text-slate-800">${r.name}</h4>
+                        <p class="text-[10px] text-slate-500">${r.price === 0 ? 'Included' : `+$${r.price}.00`}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectRibbon(id) {
+            state.ribbon = id;
+            renderRibbonOptions();
+            updateAll();
+        }
+
+        // Render Card Options
+        function renderCardOptions() {
+            const container = document.getElementById('card-style-grid');
+            container.innerHTML = cardData.map(c => `
+                <div onclick="selectCard('${c.id}')" class="cursor-pointer p-3.5 rounded-2xl border-2 transition flex items-center space-x-3 ${state.card === c.id ? 'border-blush-600 bg-blush-50/50 shadow-md' : 'border-slate-100 bg-slate-50 hover:border-blush-200'}">
+                    <span class="text-2xl">${c.icon}</span>
+                    <div>
+                        <h4 class="font-semibold text-xs text-slate-800">${c.name}</h4>
+                        <p class="text-[10px] text-slate-500">${c.price === 0 ? 'Free' : `+$${c.price}.00`}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectCard(id) {
+            state.card = id;
+            renderCardOptions();
+            updateAll();
+        }
+
+        function updateCardMessage(val) {
+            state.cardMessage = val;
+            const len = val.length;
+            document.getElementById('char-count').innerText = `${len} / 250 characters`;
+        }
+
+        // Calculation & Real-time Update Engine
+        function updateAll() {
+            let totalStems = 0;
+            let flowersCost = 0;
+
+            Object.keys(state.flowers).forEach(key => {
+                const count = state.flowers[key];
+                totalStems += count;
+                const fObj = flowersData.find(f => f.id === key);
+                flowersCost += count * fObj.price;
+            });
+
+            const wrapObj = wrappingData.find(w => w.id === state.wrapping);
+            const ribbonObj = ribbonData.find(r => r.id === state.ribbon);
+            const cardObj = cardData.find(c => c.id === state.card);
+
+            const wrappingCost = wrapObj ? wrapObj.price : 0;
+            const ribbonCost = ribbonObj ? ribbonObj.price : 0;
+            const cardCost = cardObj ? cardObj.price : 0;
+
+            const grandTotal = flowersCost + wrappingCost + ribbonCost + cardCost;
+
+            // Update UI Badges & Text
+            document.getElementById('total-stems-count').innerText = totalStems;
+            document.getElementById('summary-item-count').innerText = `${totalStems} stems`;
+            
+            let sizeName = "Standard";
+            if (totalStems > 12) sizeName = "Grand Deluxe";
+            else if (totalStems > 7) sizeName = "Deluxe";
+            else if (totalStems > 4) sizeName = "Medium";
+            else if (totalStems > 0) sizeName = "Petite";
+            else sizeName = "Empty";
+
+            document.getElementById('preview-size-badge').innerText = `${sizeName} (${totalStems} stems)`;
+            document.getElementById('preview-summary-text').innerText = `${wrapObj.name} + ${ribbonObj.name}`;
+
+            // Price breakdown list
+            let breakdownHTML = `
+                <div class="flex justify-between text-slate-600">
+                    <span>Flowers (${totalStems} stems)</span>
+                    <span class="font-medium">$${flowersCost.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                    <span>Wrapping (${wrapObj.name})</span>
+                    <span class="font-medium">${wrappingCost === 0 ? 'Free' : `$${wrappingCost.toFixed(2)}`}</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                    <span>Ribbon (${ribbonObj.name})</span>
+                    <span class="font-medium">${ribbonCost === 0 ? 'Free' : `$${ribbonCost.toFixed(2)}`}</span>
+                </div>
+            `;
+            if (cardObj && cardObj.id !== 'none') {
+                breakdownHTML += `
+                    <div class="flex justify-between text-slate-600">
+                        <span>Greeting Card (${cardObj.name})</span>
+                        <span class="font-medium">$${cardCost.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+            document.getElementById('price-breakdown-list').innerHTML = breakdownHTML;
+            document.getElementById('total-price-display').innerText = `$${grandTotal.toFixed(2)}`;
+            document.getElementById('modal-total-price').innerText = `$${grandTotal.toFixed(2)}`;
+
+            // Render SVG Visual Preview
+            renderBouquetSVG(totalStems);
+        }
+
+        // SVG Visual Generation Engine
+        function renderBouquetSVG(totalStems) {
+            const wrapObj = wrappingData.find(w => w.id === state.wrapping);
+            const ribbonObj = ribbonData.find(r => r.id === state.ribbon);
+
+            // 1. Wrapping Back SVG
+            const backSVG = document.getElementById('svg-wrapping-back');
+            backSVG.innerHTML = `
+                <path d="M100 120 L150 280 L200 120 Z" fill="${wrapObj.color}" stroke="${wrapObj.border}" stroke-width="2" opacity="0.9" />
+                <path d="M70 140 L150 280 L230 140 Z" fill="${wrapObj.color}" stroke="${wrapObj.border}" stroke-width="2" opacity="0.6" />
+            `;
+
+            // 2. Stems SVG
+            const stemsSVG = document.getElementById('svg-stems');
+            let stemsHTML = '';
+            for (let i = 0; i < Math.min(totalStems, 18); i++) {
+                const offsetX = (i - totalStems / 2) * 6 + 150;
+                stemsHTML += `<line x1="${offsetX}" y1="140" x2="150" y2="280" stroke="#608260" stroke-width="3" stroke-linecap="round" opacity="0.8"/>`;
+            }
+            stemsSVG.innerHTML = stemsHTML;
+
+            // 3. Flower Heads SVG
+            const flowersSVG = document.getElementById('svg-flowers');
+            let flowersHTML = '';
+            let activeFlowers = [];
+            Object.keys(state.flowers).forEach(key => {
+                const count = state.flowers[key];
+                const fObj = flowersData.find(f => f.id === key);
+                for (let i = 0; i < count; i++) {
+                    activeFlowers.push(fObj);
+                }
+            });
+
+            // Arrange flower heads in a bouquet cluster around center (150, 110)
+            const countAll = activeFlowers.length;
+            activeFlowers.forEach((f, idx) => {
+                const angle = (idx / Math.max(countAll, 1)) * Math.PI * 2;
+                const radius = Math.min(60, 15 + countAll * 2);
+                const cx = 150 + Math.cos(angle) * (idx === 0 ? 0 : radius);
+                const cy = 110 + Math.sin(angle) * (idx === 0 ? 0 : radius * 0.8);
+                const scale = idx === 0 ? 1.3 : 1.1;
+
+                flowersHTML += `
+                    <g transform="translate(${cx}, ${cy}) scale(${scale})" class="transition-all duration-300">
+                        <circle cx="0" cy="0" r="18" fill="${f.color}" stroke="#ffffff" stroke-width="2" class="drop-shadow-sm"/>
+                        <text x="0" y="6" text-anchor="middle" font-size="16">${f.icon.slice(0, 2)}</text>
+                    </g>
+                `;
+            });
+            flowersSVG.innerHTML = flowersHTML;
+
+            // 4. Wrapping Front & Ribbon SVG
+            const frontSVG = document.getElementById('svg-wrapping-front');
+            frontSVG.innerHTML = `
+                <path d="M100 160 Q150 200 200 160 L180 290 L120 290 Z" fill="${wrapObj.color}" stroke="${wrapObj.border}" stroke-width="2" opacity="0.95"/>
+                <!-- Ribbon Bow -->
+                <circle cx="150" cy="220" r="12" fill="${ribbonObj.color}" stroke="#ffffff" stroke-width="1.5" class="drop-shadow"/>
+                <path d="M135 210 Q120 200 130 225 Q145 220 150 220 Z" fill="${ribbonObj.color}"/>
+                <path d="M165 210 Q180 200 170 225 Q155 220 150 220 Z" fill="${ribbonObj.color}"/>
+                <path d="M145 230 L135 270 L150 265 L165 270 L155 230 Z" fill="${ribbonObj.color}" opacity="0.9"/>
+            `;
+        }
+
+        // Preset Loader
+        function loadPreset(presetName) {
+            if (presetName === 'romantic') {
+                state.flowers = { rose: 9, tulip: 0, sunflower: 0, orchid: 0, peony: 2, babysbreath: 3 };
+                state.wrapping = 'korean_blush';
+                state.ribbon = 'burgundy_velvet';
+                state.card = 'romance';
+            } else if (presetName === 'sunshine') {
+                state.flowers = { rose: 0, tulip: 5, sunflower: 3, orchid: 0, peony: 0, babysbreath: 4 };
+                state.wrapping = 'kraft_eco';
+                state.ribbon = 'gold_jute';
+                state.card = 'congrats';
+            } else if (presetName === 'lavender') {
+                state.flowers = { rose: 0, tulip: 4, sunflower: 0, orchid: 4, peony: 2, babysbreath: 2 };
+                state.wrapping = 'lavender_mist';
+                state.ribbon = 'white_chiffon';
+                state.card = 'birthday';
+            }
+
+            // Sync UI counters
+            Object.keys(state.flowers).forEach(key => {
+                const el = document.getElementById(`count-${key}`);
+                if (el) el.innerText = state.flowers[key];
+            });
+
+            renderWrappingOptions();
+            renderRibbonOptions();
+            renderCardOptions();
+            updateAll();
+            scrollToCustomizer();
+        }
+
+        function resetBouquet() {
+            state.flowers = { rose: 5, tulip: 0, sunflower: 0, orchid: 0, peony: 2, babysbreath: 2 };
+            state.wrapping = 'korean_blush';
+            state.ribbon = 'satin_blush';
+            state.card = 'none';
+            state.cardMessage = '';
+            document.getElementById('card-message-input').value = '';
+            
+            Object.keys(state.flowers).forEach(key => {
+                const el = document.getElementById(`count-${key}`);
+                if (el) el.innerText = state.flowers[key];
+            });
+
+            renderWrappingOptions();
+            renderRibbonOptions();
+            renderCardOptions();
+            updateAll();
+        }
+
+        // Checkout Modal Actions
+        function openCheckoutModal() {
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            closeCheckoutModal();
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            resetBouquet();
+        }
+    </script>
+</body>
+</html>
